@@ -22,12 +22,12 @@ int main() {
 
     // Demander à l'utilisateur s'il veut ajouter un motif
     char choix;
-    std::cout << "Voulez-vous ajouter un motif à la bibliothèque (O/N) ? ";
+    std::cout << "Voulez-vous ajouter des motifs à la bibliothèque (O/N) ? ";
     std::cin >> choix;
 
     if (choix == 'O' || choix == 'o') {
-        // Permet à l'utilisateur de choisir parmi les motifs prédéfinis
-        bibliotheque.ajouterMotifDepuisClavier();  // Appelle la méthode de BibliothequeMotif
+        // Ajoute les motifs prédéfinis à la bibliothèque
+        bibliotheque.ajouterMotifDepuisClavier();
     }
 
     // Afficher la liste des motifs disponibles dans la bibliothèque
@@ -61,14 +61,14 @@ int main() {
         return 1;  // Arrêt en cas d'erreur
     }
 
-    // Si l'utilisateur veut ajouter un motif, lui proposer un choix spécifique
+    // Demander à l'utilisateur quel motif insérer dans la grille
+    Motif* motifChoisi = nullptr;
     if (choix == 'O' || choix == 'o') {
         std::cout << "Choisissez un motif à insérer dans la grille parmi les suivants :\n";
         std::cout << "1 - Glider\n2 - Bloc\n3 - Oscillateur\n";
         int choixMotif;
         std::cin >> choixMotif;
 
-        Motif* motifChoisi = nullptr;
         switch (choixMotif) {
             case 1:
                 motifChoisi = bibliotheque.getMotifParNom("Glider");
@@ -94,18 +94,6 @@ int main() {
         }
     } else {
         std::cout << "Aucun motif ajouté. La grille va rester aléatoire.\n";
-    }
-
-    // Si aucun motif n'est ajouté, garantir que la grille soit aléatoire
-    if (choix == 'N' || choix == 'n') {
-        // Générer une grille aléatoire si aucun motif n'est ajouté
-        try {
-            FichierTexte::genererGrilleAleatoire(cheminFichier, largeur, hauteur);
-            std::cout << "Grille générée aléatoirement et sauvegardée dans " << cheminFichier << std::endl;
-        } catch (const std::exception& e) {
-            std::cerr << "Erreur lors de la génération de la grille aléatoire : " << e.what() << std::endl;
-            return 1;  // Arrêt en cas d'erreur
-        }
     }
 
     // Démarre la simulation
