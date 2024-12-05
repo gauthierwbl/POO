@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-class BibliothèqueMotif {
+class BibliothequeMotif {
 private:
     std::vector<Motif> motifs;  // Liste des motifs
 

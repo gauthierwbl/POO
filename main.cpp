@@ -15,7 +15,7 @@ int main() {
 
     // Création des objets principaux
     Simulation simulation(largeur, hauteur, torique, nombreIterations);
-    BibliothèqueMotif bibliotheque;
+    BibliothequeMotif bibliotheque;
 
     // Ajout des motifs par l'utilisateur
     char choix;
