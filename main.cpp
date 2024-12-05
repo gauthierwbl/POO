@@ -106,7 +106,7 @@ int main() {
             for (int x = 0; x < largeur; x++) {
                 for (int y = 0; y < hauteur; y++) {
                     cellule.setPosition(x * 20 + 1, y * 20 + 1);
-                    cellule.setFillColor(simulation.getGrille()->getCellule(x, y)->getEtatActuel() ? sf::Color::Black : sf::Color::White);
+                    cellule.setFillColor(simulation.getGrille()->getCellule(x, y)->getEtatActuel() ? sf::Color::Green : sf::Color::Black);
                     window.draw(cellule);
                 }
             }
