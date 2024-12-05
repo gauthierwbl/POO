@@ -22,18 +22,9 @@ void Simulation::setGrille(Grille* nouvelleGrille) {
 
 // Démarre la simulation
 void Simulation::demarrer() {
-    for (int iteration = 0; iteration < nombreIterations; ++iteration) {
-        std::cout << "Itération " << iteration + 1 << " :\n";
-        grille->afficherConsole();
-
-        // Sauvegarde de l'état actuel de la grille dans un fichier
-        std::string nomFichier = "Etat_Iteration_" + std::to_string(iteration + 1) + ".txt";
-        FichierTexte::sauvegarder(nomFichier, *grille);
-
-        grille->calculerEtatsSuivants();
-        grille->mettreAJour();
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));  // Pause pour observer l'évolution
-    }
+    grille->afficherConsole(); // Optionally display state
+    grille->calculerEtatsSuivants();
+    grille->mettreAJour();
 }
 
 // Charge un état initial depuis un fichier

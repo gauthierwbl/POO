@@ -110,6 +110,7 @@ Cellule* Grille::getCellule(int x, int y) const {
         return cellules[x][y];
     }
     return nullptr;
+
 }
 
 void Grille::ajouterMotifDansGrille(const Motif& motif) {
@@ -123,6 +124,11 @@ void Grille::ajouterMotifDansGrille(const Motif& motif) {
         }
     }
 }
+
+
+
+
+
 
 
 

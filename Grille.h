@@ -34,6 +34,7 @@ public:
 
     // Ajout de la méthode 'ajouterMotifDansGrille' dans la déclaration de la classe Grille
     void ajouterMotifDansGrille(const Motif& motif);
+
 };
 
 #endif

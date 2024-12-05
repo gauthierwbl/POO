@@ -1,127 +1,147 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <SFML/Graphics.hpp>
 #include "Simulation.h"
 #include "FichierTexte.h"
 #include "Grille.h"
-#include "Cellule.h"
 #include "BibliothequeMotif.h"
-#include <iostream>
-#include <fstream>
-#include <stdexcept>
 
 int main() {
-    // Dimensions de la grille
-    int largeur = 10;
-    int hauteur = 10;
-    bool torique = true;  // Grille torique (si applicable)
-    int nombreIterations = 5;
+    // Initialisation des paramètres
+    int largeur = 10, hauteur = 10, nombreIterations = 10;
+    bool torique = true;  // Grille torique
 
-    // Crée une simulation avec la grille spécifiée
+    // Création des objets principaux
     Simulation simulation(largeur, hauteur, torique, nombreIterations);
-
-    // Crée une bibliothèque de motifs
     BibliothèqueMotif bibliotheque;
 
-    // Demander à l'utilisateur s'il veut ajouter un motif
+
+    // Ajout des motifs par l'utilisateur
     char choix;
     std::cout << "Voulez-vous ajouter des motifs à la bibliothèque (O/N) ? ";
     std::cin >> choix;
 
     if (choix == 'O' || choix == 'o') {
-        // Ajoute les motifs prédéfinis à la bibliothèque
         bibliotheque.ajouterMotifDepuisClavier();
     }
 
-    // Afficher la liste des motifs disponibles dans la bibliothèque
     std::cout << "Voici les motifs disponibles dans la bibliothèque :\n";
     bibliotheque.afficherListeMotifs();
 
-    // Vérifier si le fichier GrilleInitiale.txt existe
+    // Gestion du fichier d'état initial
     std::string cheminFichier = "GrilleInitiale.txt";
     std::ifstream fichier(cheminFichier);
 
     if (!fichier.is_open()) {
-        // Si le fichier n'existe pas, générer une grille aléatoire
         std::cout << "Le fichier " << cheminFichier << " n'existe pas. Génération d'une grille aléatoire.\n";
         try {
-            // Générer une grille aléatoire et la sauvegarder dans GrilleInitiale.txt
             FichierTexte::genererGrilleAleatoire(cheminFichier, largeur, hauteur);
-            std::cout << "Grille générée et sauvegardée dans " << cheminFichier << std::endl;
+            std::cout << "Grille générée et sauvegardée dans " << cheminFichier << ".\n";
         } catch (const std::exception& e) {
-            std::cerr << "Erreur lors de la génération de la grille aléatoire : " << e.what() << std::endl;
-            return 1;  // Arrêt en cas d'erreur
+            std::cerr << "Erreur lors de la génération de la grille : " << e.what() << std::endl;
+            return 1;
         }
     }
 
-    // Charger l'état initial depuis le fichier texte
     try {
-        // Charger l'état initial de la grille
         FichierTexte::charger(cheminFichier, *simulation.getGrille());
-        std::cout << "État initial chargé depuis " << cheminFichier << std::endl;
+        std::cout << "État initial chargé depuis " << cheminFichier << ".\n";
     } catch (const std::exception& e) {
-        std::cerr << "Erreur lors du chargement de l'état initial : " << e.what() << std::endl;
-        return 1;  // Arrêt en cas d'erreur
+        std::cerr << "Erreur lors du chargement de la grille : " << e.what() << std::endl;
+        return 1;
     }
-
-    // Demander à l'utilisateur quel motif insérer dans la grille
+    
     Motif* motifChoisi = nullptr;
+
     if (choix == 'O' || choix == 'o') {
-        std::cout << "Choisissez un motif à insérer dans la grille parmi les suivants :\n";
+        std::cout << "Choisissez un motif à insérer dans la grille :\n";
         std::cout << "1 - Glider\n2 - Bloc\n3 - Oscillateur\n";
         int choixMotif;
         std::cin >> choixMotif;
 
         switch (choixMotif) {
-            case 1:
-                motifChoisi = bibliotheque.getMotifParNom("Glider");
-                break;
-            case 2:
-                motifChoisi = bibliotheque.getMotifParNom("Bloc");
-                break;
-            case 3:
-                motifChoisi = bibliotheque.getMotifParNom("Oscillateur");
-                break;
-            default:
-                std::cout << "Choix invalide.\n";
-                return 1;
+            case 1: motifChoisi = bibliotheque.getMotifParNom("Glider"); break;
+            case 2: motifChoisi = bibliotheque.getMotifParNom("Bloc"); break;
+            case 3: motifChoisi = bibliotheque.getMotifParNom("Oscillateur"); break;
+            default: std::cout << "Choix invalide.\n"; return 1;
         }
 
-        if (motifChoisi != nullptr) {
-            std::cout << "Motif choisi : " << motifChoisi->getNom() << std::endl;
-            // Ajouter le motif à la grille sans vérification des dimensions
+        if (motifChoisi) {
             simulation.getGrille()->ajouterMotifDansGrille(*motifChoisi);
+            std::cout << "Motif ajouté à la grille.\n";
         } else {
-            std::cerr << "Motif non trouvé dans la bibliothèque.\n";
+            std::cerr << "Motif non trouvé.\n";
             return 1;
         }
-    } else {
-        std::cout << "Aucun motif ajouté. La grille va rester aléatoire.\n";
     }
 
-    // Démarre la simulation
-    std::cout << "Démarrage de la simulation...\n";
-    simulation.demarrer();
+    // Choix du mode d'affichage
+    char choixInterface;
+    std::cout << "Voulez-vous utiliser l'interface graphique (G) ou la console (C) ? ";
+    std::cin >> choixInterface;
 
-    // Sauvegarder l'état final de la grille dans un fichier texte
-    std::string fichierFinal = "GrilleFinale.txt";
+    if (choixInterface == 'G' || choixInterface == 'g') {
+        // Interface graphique avec SFML
+        sf::RenderWindow window(sf::VideoMode(largeur * 20, hauteur * 20), "Jeu de la Vie");
+        sf::RectangleShape cellule(sf::Vector2f(18, 18));
 
-    // Vérifier si le fichier existe déjà
-    std::ifstream fichierFinalCheck(fichierFinal);
-    if (fichierFinalCheck.is_open()) {
-        char reponse;
-        std::cout << "Le fichier " << fichierFinal << " existe déjà. Voulez-vous l'écraser (O/N) ? ";
-        std::cin >> reponse;
-        if (reponse != 'O' && reponse != 'o') {
-            std::cout << "Sauvegarde annulée.\n";
-            return 0;
+        int iterationActuelle = 0;
+        while (window.isOpen() && iterationActuelle < nombreIterations) {
+            sf::Event event;
+            while (window.pollEvent(event)) {
+                if (event.type == sf::Event::Closed) {
+                    window.close();
+                } else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Right) {
+                    simulation.demarrer();
+                    iterationActuelle++;
+                }
+            }
+
+            window.clear(sf::Color::White);
+            for (int x = 0; x < largeur; x++) {
+                for (int y = 0; y < hauteur; y++) {
+                    cellule.setPosition(x * 20 + 1, y * 20 + 1);
+                    cellule.setFillColor(simulation.getGrille()->getCellule(x, y)->getEtatActuel() ? sf::Color::Black : sf::Color::White);
+                    window.draw(cellule);
+                }
+            }
+            window.display();
+        }
+    } else {
+        // Mode console
+        std::cout << "Simulation en mode console...\n";
+        for (int i = 0; i < nombreIterations; ++i) {
+            std::cout << "Itération " << i + 1 << " :\n";
+                    // Mode console
+        std::cout << "Simulation en mode console...\n";
+        for (int i = 0; i < nombreIterations; ++i) {
+            std::cout << "Itération " << i + 1 << " :\n";
+
+            // Sauvegarde de l'état actuel de la grille dans un fichier
+            std::string nomFichier = "Etat_Iteration_" + std::to_string(i + 1) + ".txt";
+            FichierTexte::sauvegarder(nomFichier, *simulation.getGrille());
+}
+            simulation.demarrer();
+            simulation.getGrille()->afficherConsole();
+            std::cout << "Appuyez sur Entrée pour continuer...\n";
+            std::cin.ignore();
+        
+            simulation.demarrer();
+            simulation.getGrille()->afficherConsole();
+            std::cout << "Appuyez sur Entrée pour continuer...\n";
+            std::cin.ignore();
         }
     }
 
-    // Sauvegarder l'état final de la grille
+    // Sauvegarde de l'état final
+    std::string fichierFinal = "GrilleFinale.txt";
     try {
         FichierTexte::sauvegarder(fichierFinal, *simulation.getGrille());
-        std::cout << "Simulation terminée, état final sauvegardé dans " << fichierFinal << std::endl;
+        std::cout << "État final sauvegardé dans '" << fichierFinal << "'.\n";
     } catch (const std::exception& e) {
         std::cerr << "Erreur lors de la sauvegarde de l'état final : " << e.what() << std::endl;
-        return 1;  // Arrêt en cas d'erreur
+        return 1;
     }
 
     return 0;
