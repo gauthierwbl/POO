@@ -1,8 +1,9 @@
-// Grille.h
 #ifndef GRILLE_H
 #define GRILLE_H
 
 #include "Cellule.h"
+#include "CelluleMorte.h"
+#include "CelluleVivante.h"  // Ajout de la classe CelluleVivante
 #include "Motif.h"
 #include <vector>
 
@@ -30,11 +31,9 @@ public:
 
     void setCellule(int x, int y, Cellule* cellule);
     Cellule* getCellule(int x, int y) const;
-    
 
-    // Ajout de la méthode 'ajouterMotifDansGrille' dans la déclaration de la classe Grille
+    // Ajout de la méthode 'ajouterMotifDansGrille'
     void ajouterMotifDansGrille(const Motif& motif);
-
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include "Motif.h"
+#include <iostream>
 
 // Constructeur
 Motif::Motif(std::string nom, int largeur, int hauteur)

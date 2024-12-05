@@ -42,10 +42,10 @@ void FichierTexte::charger(const std::string& chemin, Grille& grille) {
 
             // Création de la cellule en fonction des caractères du fichier
             if (ligne[x] == '1') {
-                nouvelleCellule = new CelluleStandard();
+                nouvelleCellule = new CelluleVivante();  // Remplacer CelluleStandard par CelluleVivante
                 nouvelleCellule->setEtatActuel(true);
             } else {
-                nouvelleCellule = new CelluleObstacle();
+                nouvelleCellule = new CelluleMorte();  // Remplacer CelluleObstacle par CelluleMorte
                 nouvelleCellule->setEtatActuel(false);
             }
 
@@ -94,3 +94,4 @@ void FichierTexte::genererGrilleAleatoire(const std::string& chemin, int largeur
 
     std::cout << "Fichier généré avec une grille aléatoire : " << chemin << std::endl;
 }
+

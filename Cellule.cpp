@@ -15,9 +15,14 @@ void Cellule::setEtatActuel(bool etat) {
     etatActuel = etat; // Met à jour l'état actuel
 }
 
-// Méthode pour mettre à jour l'état de la cellule
-void Cellule::mettreAJour() {
-    etatActuel = etatSuivant; // Met l'état actuel à l'état suivant
+// Accesseur pour obtenir l'état suivant de la cellule
+bool Cellule::getEtatSuivant() const {
+    return etatSuivant; // Retourne l'état suivant
+}
+
+// Mutateur pour définir l'état suivant de la cellule
+void Cellule::setEtatSuivant(bool etat) {
+    etatSuivant = etat; // Met à jour l'état suivant
 }
 
 // Destructeur virtuel

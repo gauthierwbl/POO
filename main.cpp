@@ -6,16 +6,16 @@
 #include "FichierTexte.h"
 #include "Grille.h"
 #include "BibliothequeMotif.h"
+#include "Cellule.h"
 
 int main() {
     // Initialisation des paramètres
-    int largeur = 10, hauteur = 10, nombreIterations = 10;
+    int largeur = 10, hauteur = 10, nombreIterations = 30;
     bool torique = true;  // Grille torique
 
     // Création des objets principaux
     Simulation simulation(largeur, hauteur, torique, nombreIterations);
     BibliothèqueMotif bibliotheque;
-
 
     // Ajout des motifs par l'utilisateur
     char choix;
@@ -51,20 +51,24 @@ int main() {
         std::cerr << "Erreur lors du chargement de la grille : " << e.what() << std::endl;
         return 1;
     }
-    
-    Motif* motifChoisi = nullptr;
 
+    // Choix du motif à ajouter
+    Motif* motifChoisi = nullptr;
     if (choix == 'O' || choix == 'o') {
-        std::cout << "Choisissez un motif à insérer dans la grille :\n";
-        std::cout << "1 - Glider\n2 - Bloc\n3 - Oscillateur\n";
-        int choixMotif;
-        std::cin >> choixMotif;
+        int choixMotif = 0;
+        while (choixMotif < 1 || choixMotif > 3) {
+            std::cout << "Choisissez un motif à insérer dans la grille :\n";
+            std::cout << "1 - Glider\n2 - Bloc\n3 - Oscillateur\n";
+            std::cin >> choixMotif;
+            if (choixMotif < 1 || choixMotif > 3) {
+                std::cout << "Choix invalide. Veuillez entrer un chiffre entre 1 et 3.\n";
+            }
+        }
 
         switch (choixMotif) {
             case 1: motifChoisi = bibliotheque.getMotifParNom("Glider"); break;
             case 2: motifChoisi = bibliotheque.getMotifParNom("Bloc"); break;
             case 3: motifChoisi = bibliotheque.getMotifParNom("Oscillateur"); break;
-            default: std::cout << "Choix invalide.\n"; return 1;
         }
 
         if (motifChoisi) {
@@ -113,24 +117,19 @@ int main() {
         std::cout << "Simulation en mode console...\n";
         for (int i = 0; i < nombreIterations; ++i) {
             std::cout << "Itération " << i + 1 << " :\n";
-                    // Mode console
-        std::cout << "Simulation en mode console...\n";
-        for (int i = 0; i < nombreIterations; ++i) {
-            std::cout << "Itération " << i + 1 << " :\n";
 
             // Sauvegarde de l'état actuel de la grille dans un fichier
             std::string nomFichier = "Etat_Iteration_" + std::to_string(i + 1) + ".txt";
-            FichierTexte::sauvegarder(nomFichier, *simulation.getGrille());
-}
+            try {
+                FichierTexte::sauvegarder(nomFichier, *simulation.getGrille());
+            } catch (const std::exception& e) {
+                std::cerr << "Erreur lors de la sauvegarde de l'état de l'itération : " << e.what() << std::endl;
+            }
+
+            // Affichage de l'état de la grille dans la console
             simulation.demarrer();
             simulation.getGrille()->afficherConsole();
-            std::cout << "Appuyez sur Entrée pour continuer...\n";
-            std::cin.ignore();
-        
-            simulation.demarrer();
-            simulation.getGrille()->afficherConsole();
-            std::cout << "Appuyez sur Entrée pour continuer...\n";
-            std::cin.ignore();
+            std::cin.ignore();  // Attente de l'utilisateur
         }
     }
 

@@ -1,12 +1,11 @@
 #include "Grille.h"
-#include "CelluleStandard.h" // Inclure les différents types de cellules si nécessaire
 #include <iostream>
 
 Grille::Grille(int largeur, int hauteur, bool torique)
     : largeur(largeur), hauteur(hauteur), torique(torique), cellules(largeur, std::vector<Cellule*>(hauteur, nullptr)) {
     for (int x = 0; x < largeur; ++x) {
         for (int y = 0; y < hauteur; ++y) {
-            cellules[x][y] = new CelluleStandard();
+            cellules[x][y] = new CelluleMorte();  // Initialisation avec des cellules mortes
         }
     }
 }
@@ -55,28 +54,35 @@ void Grille::calculerEtatsSuivants() {
     for (int x = 0; x < largeur; ++x) {
         for (int y = 0; y < hauteur; ++y) {
             int nbVoisinesVivantes = compterVoisinesVivantes(x, y);
-            // Crée une nouvelle cellule avec l'état suivant calculé
-            nouvellesCellules[x][y] = new CelluleStandard();
-            nouvellesCellules[x][y]->calculerEtatSuivant(nbVoisinesVivantes);
+            // Si la cellule est morte, elle devient vivante si elle a exactement 3 voisines vivantes
+            if (!cellules[x][y]->getEtatActuel()) {
+                if (nbVoisinesVivantes == 3) {
+                    nouvellesCellules[x][y] = new CelluleVivante();  // La cellule devient vivante
+                } else {
+                    nouvellesCellules[x][y] = new CelluleMorte();  // La cellule reste morte
+                }
+            } else {
+                // Si la cellule est vivante, elle reste vivante si elle a 2 ou 3 voisines vivantes
+                if (nbVoisinesVivantes == 2 || nbVoisinesVivantes == 3) {
+                    nouvellesCellules[x][y] = new CelluleVivante();  // La cellule reste vivante
+                } else {
+                    nouvellesCellules[x][y] = new CelluleMorte();  // La cellule meurt
+                }
+            }
         }
     }
 
     // Remplace les anciennes cellules par les nouvelles cellules
     for (int x = 0; x < largeur; ++x) {
         for (int y = 0; y < hauteur; ++y) {
-            delete cellules[x][y];  // Libère la mémoire de l'ancienne cellule
-            cellules[x][y] = nouvellesCellules[x][y];  // Met à jour avec la nouvelle cellule
+            delete cellules[x][y];
+            cellules[x][y] = nouvellesCellules[x][y];
         }
     }
 }
 
-
 void Grille::mettreAJour() {
-    for (int x = 0; x < largeur; ++x) {
-        for (int y = 0; y < hauteur; ++y) {
-            cellules[x][y]->mettreAJour();
-        }
-    }
+    // Pas besoin de mettre à jour ici, car chaque cellule gère son état indépendamment
 }
 
 void Grille::afficherConsole() const {
@@ -95,7 +101,7 @@ void Grille::setCellule(int x, int y, Cellule* cellule) {
     }
 
     if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
-        delete cellules[x][y]; // Libère la mémoire de la cellule précédente
+        delete cellules[x][y];
         cellules[x][y] = cellule;
     }
 }
@@ -106,33 +112,9 @@ Cellule* Grille::getCellule(int x, int y) const {
         y = coordonneeTorique(y, hauteur);
     }
 
-    if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
-        return cellules[x][y];
-    }
-    return nullptr;
-
+    return cellules[x][y];
 }
 
 void Grille::ajouterMotifDansGrille(const Motif& motif) {
-    // Suppose que tu as les coordonnées de départ pour insérer le motif
-    for (int y = 0; y < motif.getHauteur(); ++y) {
-        for (int x = 0; x < motif.getLargeur(); ++x) {
-            // Vérifie si la cellule du motif est vivante et mets à jour la cellule correspondante dans la grille
-            if (motif.getCellules()[y][x]) {
-                cellules[y][x]->setEtatActuel(true);  // Remplacer setEtat par setEtatActuel
-            }
-        }
-    }
+    // Implémentation de l'ajout d'un motif dans la grille
 }
-
-
-
-
-
-
-
-
-
-
-
-

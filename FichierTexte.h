@@ -2,8 +2,8 @@
 #define FICHIER_TEXTE_H
 
 #include <string>
-#include "CelluleStandard.h"
-#include "CelluleObstacle.h"
+#include "CelluleVivante.h"
+#include "CelluleMorte.h"
 #include "Grille.h"
 #include "Cellule.h"
 
