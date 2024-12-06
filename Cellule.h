@@ -6,6 +6,7 @@ class Cellule {
 protected:
     bool etatActuel;  // État actuel de la cellule : vivante (true) ou morte (false)
     bool etatSuivant; // État à venir de la cellule : vivante ou morte
+    bool etatPrecedent; // Nouvel attribut pour l'état précédent
 
 public:
     // Constructeur de la classe Cellule
@@ -23,6 +24,12 @@ public:
 
     // Mutateur pour définir l'état suivant de la cellule
     void setEtatSuivant(bool etat);
+
+    // Accesseur pour obtenir l'état précédent de la cellule
+    bool getEtatPrecedent() const; // Nouvel accesseur pour l'état précédent
+
+    // Mutateur pour définir l'état précédent de la cellule
+    void setEtatPrecedent(bool etat); // Nouvel mutateur pour l'état précédent
 
     // Méthode virtuelle pure qui sera définie dans les classes dérivées
     virtual void calculerEtatSuivant(int nbVoisinesVivantes) = 0;

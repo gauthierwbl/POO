@@ -59,8 +59,8 @@ int Grille::compterVoisinesVivantes(int x, int y) const {
 
 // Calcule les états suivants des cellules de la grille
 void Grille::calculerEtatsSuivants() {
-    // Création d'une grille temporaire pour stocker les nouveaux états
-    std::vector<std::vector<Cellule*>> nouvellesCellules(largeur, std::vector<Cellule*>(hauteur, nullptr));
+    // Création de la grille temporaire (grilleAChange) pour stocker les nouveaux états
+    std::vector<std::vector<Cellule*>> grilleAChange(largeur, std::vector<Cellule*>(hauteur, nullptr));
 
     for (int x = 0; x < largeur; ++x) {
         for (int y = 0; y < hauteur; ++y) {
@@ -68,26 +68,26 @@ void Grille::calculerEtatsSuivants() {
             // Si la cellule est morte, elle devient vivante si elle a exactement 3 voisines vivantes
             if (!cellules[x][y]->getEtatActuel()) {
                 if (nbVoisinesVivantes == 3) {
-                    nouvellesCellules[x][y] = new CelluleVivante();  // La cellule devient vivante
+                    grilleAChange[x][y] = new CelluleVivante();  // La cellule devient vivante
                 } else {
-                    nouvellesCellules[x][y] = new CelluleMorte();  // La cellule reste morte
+                    grilleAChange[x][y] = new CelluleMorte();  // La cellule reste morte
                 }
             } else {
                 // Si la cellule est vivante, elle reste vivante si elle a 2 ou 3 voisines vivantes
                 if (nbVoisinesVivantes == 2 || nbVoisinesVivantes == 3) {
-                    nouvellesCellules[x][y] = new CelluleVivante();  // La cellule reste vivante
+                    grilleAChange[x][y] = new CelluleVivante();  // La cellule reste vivante
                 } else {
-                    nouvellesCellules[x][y] = new CelluleMorte();  // La cellule meurt
+                    grilleAChange[x][y] = new CelluleMorte();  // La cellule meurt
                 }
             }
         }
     }
 
-    // Remplace les anciennes cellules par les nouvelles cellules
+    // Remplace les anciennes cellules par les nouvelles cellules dans la grille principale
     for (int x = 0; x < largeur; ++x) {
         for (int y = 0; y < hauteur; ++y) {
             delete cellules[x][y]; // Libère l'ancienne cellule
-            cellules[x][y] = nouvellesCellules[x][y]; // Met à jour avec la nouvelle cellule
+            cellules[x][y] = grilleAChange[x][y]; // Met à jour avec la nouvelle cellule
         }
     }
 }

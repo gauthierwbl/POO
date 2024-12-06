@@ -1,9 +1,8 @@
 #include "Cellule.h"
-#include <iostream>
 
 // Constructeur de la classe Cellule
 // Initialise l'état actuel avec etatInitial et l'état suivant par défaut à faux (false)
-Cellule::Cellule(bool etatInitial) : etatActuel(etatInitial), etatSuivant(false) {}
+Cellule::Cellule(bool etatInitial) : etatActuel(etatInitial), etatSuivant(false), etatPrecedent(false) {}
 
 // Accesseur pour obtenir l'état actuel de la cellule
 bool Cellule::getEtatActuel() const {
@@ -23,6 +22,16 @@ bool Cellule::getEtatSuivant() const {
 // Mutateur pour définir l'état suivant de la cellule
 void Cellule::setEtatSuivant(bool etat) {
     etatSuivant = etat; // Met à jour l'état suivant
+}
+
+// Accesseur pour obtenir l'état précédent de la cellule
+bool Cellule::getEtatPrecedent() const {
+    return etatPrecedent; // Retourne l'état précédent
+}
+
+// Mutateur pour définir l'état précédent de la cellule
+void Cellule::setEtatPrecedent(bool etat) {
+    etatPrecedent = etat; // Met à jour l'état précédent
 }
 
 // Destructeur virtuel

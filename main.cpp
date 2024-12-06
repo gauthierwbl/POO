@@ -8,6 +8,20 @@
 #include "BibliothequeMotif.h"
 #include "Cellule.h"
 
+bool grilleAChange(Grille* grille) {
+    // Vérifie si l'état de la grille a changé
+    for (int x = 0; x < grille->getLargeur(); ++x) {
+        for (int y = 0; y < grille->getHauteur(); ++y) {
+            // Si l'état de la cellule a changé, retourne true
+            if (grille->getCellule(x, y)->getEtatActuel() != grille->getCellule(x, y)->getEtatPrecedent()) {
+                return true;
+            }
+        }
+    }
+    // Si toutes les cellules sont identiques à la précédente itération, retourne false
+    return false;
+}
+
 int main() {
     // Initialisation des paramètres
     int largeur = 10, hauteur = 10, nombreIterations = 10;
@@ -46,13 +60,15 @@ int main() {
     std::cout << "Voulez-vous utiliser l'interface graphique (G) ou la console (C) ? ";
     std::cin >> choixInterface;
 
+    bool grilleStable = false;
+    int iterationActuelle = 0;
+
     if (choixInterface == 'G' || choixInterface == 'g') {
         // Interface graphique avec SFML
         sf::RenderWindow window(sf::VideoMode(largeur * 20, hauteur * 20), "Jeu de la Vie");
         sf::RectangleShape cellule(sf::Vector2f(18, 18));
 
-        int iterationActuelle = 0;
-        while (window.isOpen() && iterationActuelle < nombreIterations) {
+        while (window.isOpen() && iterationActuelle < nombreIterations && !grilleStable) {
             sf::Event event;
             while (window.pollEvent(event)) {
                 if (event.type == sf::Event::Closed) {
@@ -60,6 +76,7 @@ int main() {
                 } else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Right) {
                     simulation.demarrer();
                     iterationActuelle++;
+                    grilleStable = !grilleAChange(simulation.getGrille());  // Vérifie si la grille a changé
                 }
             }
 
@@ -76,7 +93,7 @@ int main() {
     } else {
         // Mode console
         std::cout << "Simulation en mode console...\n";
-        for (int i = 0; i < nombreIterations; ++i) {
+        for (int i = 0; i < nombreIterations && !grilleStable; ++i) {
             std::cout << "Itération " << i + 1 << " :\n";
 
             // Sauvegarde de l'état actuel de la grille dans un fichier
@@ -89,6 +106,12 @@ int main() {
 
             // Affichage de l'état de la grille dans la console
             simulation.demarrer();
+
+            // Vérifie si la grille a changé
+            grilleStable = !grilleAChange(simulation.getGrille());
+            if (grilleStable) {
+                std::cout << "La grille ne change plus. Fin de la simulation.\n";
+            }
 
             std::cin.ignore();  // Attente de l'utilisateur
         }
