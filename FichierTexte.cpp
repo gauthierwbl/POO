@@ -1,11 +1,12 @@
-#include "FichierTexte.h"       // Inclusion de la classe FichierTexte
-#include <fstream>              // Inclusion de la bibliothèque fstream pour la gestion des fichiers
-#include <sstream>              // Inclusion de la bibliothèque sstream pour le traitement des chaînes
-#include <stdexcept>            // Inclusion de la bibliothèque stdexcept pour les exceptions
-#include <iostream>             // Inclusion de la bibliothèque iostream pour les entrées/sorties standard
-#include <random>               // Inclusion de la bibliothèque random pour la génération aléatoire
+#include "FichierTexte.h"
+#include <fstream>
+#include <sstream>
+#include <stdexcept>
+#include <iostream>
+#include <random>
 
-// Méthodes utilitaires pour manipuler les fichiers texte
+// Constructeur
+FichierTexte::FichierTexte() {}
 
 // Lire le contenu d'un fichier texte et le retourner sous forme de chaîne
 std::string FichierTexte::lireFichierTexte(const std::string& chemin) {

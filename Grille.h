@@ -42,6 +42,7 @@ public:
 
     // Ajout de la méthode 'ajouterMotifDansGrille'
     void ajouterMotifDansGrille(const Motif& motif); // Ajoute un motif à la grille
+
 };
 
 #endif // Fin de la protection d'inclusion

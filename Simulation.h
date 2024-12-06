@@ -3,7 +3,7 @@
 
 #include "Grille.h"
 #include "FichierTexte.h"
-#include "Motif.h"  // Ajoutez l'inclusion de la classe Motif
+#include "Motif.h"  // Ajout de l'inclusion de la classe Motif
 #include <string>
 
 // Classe gérant une simulation d'automate cellulaire
@@ -11,6 +11,7 @@ class Simulation {
 private:
     Grille* grille;            // Pointeur vers la grille utilisée dans la simulation
     int nombreIterations;      // Nombre total d'itérations de la simulation
+    FichierTexte* fichierTexte; // Pointeur vers l'objet de gestion des fichiers
 
 public:
     // Constructeur de la simulation
