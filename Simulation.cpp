@@ -26,13 +26,13 @@ void Simulation::setGrille(Grille* nouvelleGrille) {
 
 // Démarre la simulation
 void Simulation::demarrer() {
-    grille->afficherConsole(); // Affiche l'état courant de la grille
-    for (int i = 0; i < nombreIterations; ++i) {
-        grille->calculerEtatsSuivants(); // Calcule les états suivants
-        grille->mettreAJour(); // Met à jour l'affichage de la grille
-        std::this_thread::sleep_for(std::chrono::milliseconds(5)); // Pause pour visualiser les changements
-    }
+    // Avance d'une étape dans la simulation
+    grille->next();  // Calcul des états suivants et mise à jour de la grille
+
+    // Affichage de la grille après mise à jour
+    grille->afficherConsole();  // Affiche l'état actuel de la grille
 }
+
 
 // Charge un état initial depuis un fichier
 void Simulation::chargerEtatInitial(const std::string& cheminFichier) {
@@ -50,4 +50,3 @@ void Simulation::chargerEtatInitial(const std::string& cheminFichier) {
 void Simulation::sauvegarderEtatCourant(const std::string& cheminFichier) {
     fichierTexte->sauvegarder(cheminFichier, *grille); // Utilisation du pointeur pour appeler la méthode
 }
-

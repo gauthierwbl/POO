@@ -1,19 +1,13 @@
-#ifndef CELLULE_MORTE_H
-#define CELLULE_MORTE_H
+#ifndef CELLULEMORTE_H
+#define CELLULEMORTE_H
 
 #include "Cellule.h"
 
-// Définition de la classe CelluleMorte, dérivée de la classe Cellule
 class CelluleMorte : public Cellule {
 public:
-    // Constructeur de la classe CelluleMorte
-    CelluleMorte();
-
-    // La cellule morte ne change pas d'état suivant, elle reste morte
-    void calculerEtatSuivant(int nbVoisinesVivantes) override;
-
-    // La cellule morte ne met pas à jour son état
-    void mettreAJour() override;
+    CelluleMorte();  // Constructeur
+    bool getEtatActuel() const override;  // Retourne l'état actuel
+    void setEtatActuel(bool etat) override;  // Modifie l'état actuel
 };
 
-#endif
+#endif // CELLULEMORTE_H

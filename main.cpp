@@ -9,7 +9,7 @@
 
 int main() {
     // Initialisation des paramètres
-    int largeur = 20, hauteur = 20, nombreIterations = 20;
+    int largeur = 40, hauteur = 40, nombreIterations = 20;
     bool torique = false;  // Grille torique
 
     // Création des objets principaux
