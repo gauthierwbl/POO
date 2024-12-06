@@ -51,8 +51,3 @@ void Simulation::sauvegarderEtatCourant(const std::string& cheminFichier) {
     fichierTexte->sauvegarder(cheminFichier, *grille); // Utilisation du pointeur pour appeler la méthode
 }
 
-// Ajoute un motif à la grille
-void Simulation::ajouterMotifDansGrille(const Motif& motif) {
-    // Utilisation de la méthode d'ajout du motif dans la grille
-    grille->ajouterMotifDansGrille(motif); // Ajoute le motif à la grille
-}

@@ -3,7 +3,6 @@
 
 #include "Grille.h"
 #include "FichierTexte.h"
-#include "Motif.h"  // Ajout de l'inclusion de la classe Motif
 #include <string>
 
 // Classe gérant une simulation d'automate cellulaire
@@ -34,9 +33,6 @@ public:
 
     // Setter pour la grille
     void setGrille(Grille* nouvelleGrille);
-
-    // Ajoute un motif à la grille
-    void ajouterMotifDansGrille(const Motif& motif);  // Nouvelle méthode pour gérer l'ajout de motifs
 };
 
 #endif

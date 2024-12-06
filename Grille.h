@@ -4,7 +4,6 @@
 #include "Cellule.h"              // Inclusion de la classe Cellule
 #include "CelluleMorte.h"         // Inclusion de la classe CelluleMorte
 #include "CelluleVivante.h"       // Inclusion de la classe CelluleVivante
-#include "Motif.h"                // Inclusion de la classe Motif
 #include <vector>                // Inclusion de la bibliothèque vector pour utiliser des vecteurs
 
 // Déclaration de la classe Grille
@@ -39,10 +38,6 @@ public:
     // Méthodes pour manipuler les cellules de la grille
     void setCellule(int x, int y, Cellule* cellule); // Définit une cellule à une position donnée
     Cellule* getCellule(int x, int y) const;         // Obtient la cellule à une position donnée
-
-    // Ajout de la méthode 'ajouterMotifDansGrille'
-    void ajouterMotifDansGrille(const Motif& motif); // Ajoute un motif à la grille
-
 };
 
 #endif // Fin de la protection d'inclusion

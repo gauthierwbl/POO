@@ -5,31 +5,15 @@
 #include "Simulation.h"
 #include "FichierTexte.h"
 #include "Grille.h"
-#include "BibliothequeMotif.h"
 #include "Cellule.h"
-
-bool grilleAChange(Grille* grille) {
-    // Vérifie si l'état de la grille a changé
-    for (int x = 0; x < grille->getLargeur(); ++x) {
-        for (int y = 0; y < grille->getHauteur(); ++y) {
-            // Si l'état de la cellule a changé, retourne true
-            if (grille->getCellule(x, y)->getEtatActuel() != grille->getCellule(x, y)->getEtatPrecedent()) {
-                return true;
-            }
-        }
-    }
-    // Si toutes les cellules sont identiques à la précédente itération, retourne false
-    return false;
-}
 
 int main() {
     // Initialisation des paramètres
-    int largeur = 10, hauteur = 10, nombreIterations = 10;
-    bool torique = true;  // Grille torique
+    int largeur = 20, hauteur = 20, nombreIterations = 20;
+    bool torique = false;  // Grille torique
 
     // Création des objets principaux
     Simulation simulation(largeur, hauteur, torique, nombreIterations);
-    BibliothequeMotif bibliotheque;
     FichierTexte fichierTexte;  // Création d'une instance de FichierTexte
 
     // Gestion du fichier d'état initial
@@ -60,7 +44,6 @@ int main() {
     std::cout << "Voulez-vous utiliser l'interface graphique (G) ou la console (C) ? ";
     std::cin >> choixInterface;
 
-    bool grilleStable = false;
     int iterationActuelle = 0;
 
     if (choixInterface == 'G' || choixInterface == 'g') {
@@ -68,7 +51,7 @@ int main() {
         sf::RenderWindow window(sf::VideoMode(largeur * 20, hauteur * 20), "Jeu de la Vie");
         sf::RectangleShape cellule(sf::Vector2f(18, 18));
 
-        while (window.isOpen() && iterationActuelle < nombreIterations && !grilleStable) {
+        while (window.isOpen() && iterationActuelle < nombreIterations) {
             sf::Event event;
             while (window.pollEvent(event)) {
                 if (event.type == sf::Event::Closed) {
@@ -76,7 +59,6 @@ int main() {
                 } else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Right) {
                     simulation.demarrer();
                     iterationActuelle++;
-                    grilleStable = !grilleAChange(simulation.getGrille());  // Vérifie si la grille a changé
                 }
             }
 
@@ -93,7 +75,7 @@ int main() {
     } else {
         // Mode console
         std::cout << "Simulation en mode console...\n";
-        for (int i = 0; i < nombreIterations && !grilleStable; ++i) {
+        for (int i = 0; i < nombreIterations; ++i) {
             std::cout << "Itération " << i + 1 << " :\n";
 
             // Sauvegarde de l'état actuel de la grille dans un fichier
@@ -106,12 +88,6 @@ int main() {
 
             // Affichage de l'état de la grille dans la console
             simulation.demarrer();
-
-            // Vérifie si la grille a changé
-            grilleStable = !grilleAChange(simulation.getGrille());
-            if (grilleStable) {
-                std::cout << "La grille ne change plus. Fin de la simulation.\n";
-            }
 
             std::cin.ignore();  // Attente de l'utilisateur
         }

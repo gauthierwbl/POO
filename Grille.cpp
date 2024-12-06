@@ -133,11 +133,5 @@ Cellule* Grille::getCellule(int x, int y) const {
     return cellules[x][y]; // Retourne la cellule à la position donnée
 }
 
-// Ajoute un motif à la grille
-void Grille::ajouterMotifDansGrille(const Motif& motif) {
-    // Implémentation de l'ajout d'un motif dans la grille
-    // (À compléter selon les spécifications du motif)
-}
-
 
 
