@@ -33,6 +33,12 @@ public:
 
     // Setter pour la grille
     void setGrille(Grille* nouvelleGrille);
+
+    InterfaceGraphique::~InterfaceGraphique() {
+    delete simulation;  // Libère la mémoire allouée pour simulation, si nécessaire
+    // Pas besoin de supprimer `window`, car SFML le gère automatiquement
+    }
+
 };
 
 #endif

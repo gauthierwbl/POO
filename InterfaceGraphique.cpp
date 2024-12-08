@@ -19,7 +19,7 @@ void InterfaceGraphique::afficherGrille() {
         for (int y = 0; y < grille->getHauteur(); ++y) {
             cell.setPosition(x * cellSize, y * cellSize); // Positionne la cellule
             // Définit la couleur de la cellule en fonction de son état
-            cell.setFillColor(grille->getCellule(x, y)->getEtatActuel() ? sf::Color::White : sf::Color::Black);
+            cell.setFillColor(grille->getCellule(x, y)->getEtatActuel() ? sf::Color::Green : sf::Color::Black);
             window.draw(cell); // Dessine la cellule dans la fenêtre
         }
     }
